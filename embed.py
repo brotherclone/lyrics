@@ -40,7 +40,7 @@ if __name__ == '__main__':
         lambda x: {"embeddings": get_embeddings(x["info"]).detach().cpu().numpy()[0]}
     )
     embeddings_dataset.add_faiss_index(column="embeddings")
-    lyric = "Maddy, you got me singing to the towers"
+    lyric = "During the battle of Gettysburg, the Union Army was able to hold off the Confederate Army."
     lyric_embedding = get_embeddings([lyric]).cpu().detach().numpy()
     print(lyric_embedding.shape)
     scores, samples = embeddings_dataset.get_nearest_examples(
@@ -50,9 +50,7 @@ if __name__ == '__main__':
     samples_df["scores"] = scores
     samples_df.sort_values("scores", ascending=False, inplace=True)
     for _, row in samples_df.iterrows():
-        print(f"COMMENT: {row.lyrics}")
         print(f"SCORE: {row.scores}")
         print(f"TITLE: {row.title}")
-        print(f"URL: {row.notes}")
-        print("=" * 50)
         print()
+
