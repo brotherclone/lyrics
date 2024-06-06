@@ -10,7 +10,7 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 def concat_song_info(the_song_data):
     return {
         "info":
-            the_song_data["title"] + "\n" + the_song_data["notes"] + "\n" + the_song_data["lyrics"]
+            the_song_data["title"] + "\n" + the_song_data["lyrics"]
     }
 
 
@@ -29,8 +29,7 @@ def get_embeddings(text_list):
 
 
 if __name__ == '__main__':
-    song_data = load_dataset_local("/Users/gabrielwalsh/Sites/lyrics/data/song_data")
-    test_data = song_data["validation"]
+    test_data = load_dataset_local("/Users/gabrielwalsh/Sites/lyrics/data")
     test_data = test_data.map(concat_song_info)
     model_ckpt = "sentence-transformers/multi-qa-mpnet-base-dot-v1"
     tokenizer = AutoTokenizer.from_pretrained(model_ckpt)
@@ -40,7 +39,7 @@ if __name__ == '__main__':
         lambda x: {"embeddings": get_embeddings(x["info"]).detach().cpu().numpy()[0]}
     )
     embeddings_dataset.add_faiss_index(column="embeddings")
-    lyric = "In '64 we fought the in the Battle of Monocacy."
+    lyric = "Hey there, Mister Sunshine, you are my only friend."
     lyric_embedding = get_embeddings([lyric]).cpu().detach().numpy()
     print(lyric_embedding.shape)
     scores, samples = embeddings_dataset.get_nearest_examples(
@@ -52,5 +51,4 @@ if __name__ == '__main__':
     for _, row in samples_df.iterrows():
         print(f"SCORE: {row.scores}")
         print(f"TITLE: {row.title}")
-        print()
 
