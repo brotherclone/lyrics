@@ -1,0 +1,36 @@
+{
+  "citation": "",
+  "description": "",
+  "features": {
+    "id": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "title": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "trt": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "notes": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "lyrics": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "song_order": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "album_id": {
+      "dtype": "int64",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": ""
+}
