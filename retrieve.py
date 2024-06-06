@@ -3,11 +3,17 @@ import json
 import requests
 import pandas as pd
 from datasets import Dataset
+from html import unescape
+import unicodedata
 
-
-BASE_URL = 'https://www.earthlyframes.com/'
+BASE_URL = "https://www.earthlyframes.com/"
 JSON_PATH = "/Users/gabrielwalsh/Sites/lyrics/json"
 DATA_PATH = "/Users/gabrielwalsh/Sites/lyrics/data"
+
+
+def un_htmlify(text):
+    text = unescape(text)
+    return unicodedata.normalize("NFKD", text)
 
 
 def get_json_from_url(url):
@@ -60,6 +66,8 @@ def load_song_data():
         song_file_name = create_song_name(song_title, song_id)
         try:
             song_json = get_json_from_url(url + '.json')
+            song_json['lyrics'] = un_htmlify(song_json['lyrics'])
+            song_json['notes'] = un_htmlify(song_json['notes'])
             cleaned_json = remove_properties(song_json, ['created_at', 'updated_at', 'streaming_links', 'videos'])
             if validate_song_json(cleaned_json):
                 save_json_to_file(cleaned_json, song_file_name + '.json', JSON_PATH+"/songs")

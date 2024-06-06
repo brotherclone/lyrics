@@ -40,7 +40,7 @@ if __name__ == '__main__':
         lambda x: {"embeddings": get_embeddings(x["info"]).detach().cpu().numpy()[0]}
     )
     embeddings_dataset.add_faiss_index(column="embeddings")
-    lyric = "During the battle of Gettysburg, the Union Army was able to hold off the Confederate Army."
+    lyric = "In '64 we fought the in the Battle of Monocacy."
     lyric_embedding = get_embeddings([lyric]).cpu().detach().numpy()
     print(lyric_embedding.shape)
     scores, samples = embeddings_dataset.get_nearest_examples(

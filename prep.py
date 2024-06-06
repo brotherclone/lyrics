@@ -1,4 +1,4 @@
-from datasets import Dataset, load_from_disk
+from datasets import load_from_disk
 
 
 def load_dataset_local(dataset_path):
