@@ -41,7 +41,6 @@ if __name__ == '__main__':
     embeddings_dataset.add_faiss_index(column="embeddings")
     lyric = "Hey there, Mister Sunshine, you are my only friend."
     lyric_embedding = get_embeddings([lyric]).cpu().detach().numpy()
-    print(lyric_embedding.shape)
     scores, samples = embeddings_dataset.get_nearest_examples(
         "embeddings", lyric_embedding, k=5
     )
