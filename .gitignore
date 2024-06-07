@@ -293,3 +293,4 @@ DS_Store
 *.iml
 *.ipr
 data/*.arrow
+models/
