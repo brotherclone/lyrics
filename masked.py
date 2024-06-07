@@ -5,7 +5,7 @@ import torch
 from accelerate import Accelerator
 from torch.utils.data import DataLoader
 from transformers import AutoModelForMaskedLM, AutoTokenizer, DataCollatorForLanguageModeling, default_data_collator, \
-    TrainingArguments, Trainer, get_scheduler
+    TrainingArguments, Trainer, get_scheduler, pipeline
 from prep import load_dataset_local
 from torch.optim import AdamW
 from tqdm.auto import tqdm
@@ -77,7 +77,7 @@ def tokenize_samples(examples):
 
 model_checkpoint = "distilbert-base-uncased"
 model = AutoModelForMaskedLM.from_pretrained(model_checkpoint)
-text = "There's [MASK] sunshine, he's at it again."
+text = "I know that you had been seen, last year on the five o'clock [MASK]."
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
 inputs = tokenizer(text, return_tensors="pt")
 token_logits = model(**inputs).logits
@@ -218,3 +218,10 @@ for epoch in range(num_train_epochs):
     unwrapped_model.save_pretrained(OUTPUT_DIR, save_function=accelerator.save)
     if accelerator.is_main_process:
         tokenizer.save_pretrained(OUTPUT_DIR)
+
+mask_filler = pipeline(
+    "fill-mask", model="/Users/gabrielwalsh/Sites/lyrics/models"
+)
+preds = mask_filler(text)
+for pred in preds:
+    print(f">>> {pred['sequence']}")
